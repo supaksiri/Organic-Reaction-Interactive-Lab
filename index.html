@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organic Reaction Interactive Lab | ห้องทดลองปฏิกิริยาเคมีของสารอินทรีย์</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- =========================================================
+       เฟส 2: โครงหน้าและ Navigation (7 หน้า)
+       ทุกหน้าอยู่ใน DOM เดียวกัน สลับด้วย class "page--active"
+       ========================================================= -->
+
+  <!-- แถบนำทางบน: โชว์เฉพาะเมื่อเข้าสู่แอพแล้ว (ไม่โชว์ที่หน้าแรกก่อนกรอกชื่อ) -->
+  <nav id="main-nav" class="main-nav main-nav--hidden">
+    <div class="main-nav__brand">🧪 Organic Lab</div>
+    <div class="main-nav__links">
+      <button class="nav-link" data-page="page-home">หน้าแรก</button>
+      <button class="nav-link" data-page="page-guide">คู่มือ</button>
+      <button class="nav-link" data-page="page-lab">ห้องทดลอง</button>
+      <button class="nav-link" data-page="page-equation">สมการ</button>
+      <button class="nav-link" data-page="page-table">ตารางผล</button>
+      <button class="nav-link" data-page="page-mission">ภารกิจ</button>
+      <button class="nav-link" data-page="page-summary">สรุปผล</button>
+    </div>
+    <div class="main-nav__user">
+      <span id="nav-user-name">-</span>
+      <span id="nav-user-mode" class="badge">นักเรียน</span>
+    </div>
+  </nav>
+
+  <main id="app-root">
+
+    <!-- ============ หน้า 1: หน้าแรก ============ -->
+    <section id="page-home" class="page page--active">
+      <div class="hero-card">
+        <h1 class="hero-title">Organic Reaction Interactive Lab</h1>
+        <p class="hero-subtitle">ห้องทดลองอินเทอร์แอคทีฟ: ปฏิกิริยาเคมีของสารอินทรีย์</p>
+        <p class="hero-tagline">"ทดลอง ปรับค่า สังเกตสี วิเคราะห์สมการ และทำนายผลิตภัณฑ์"</p>
+
+        <form id="start-form" class="start-form">
+          <div class="form-row">
+            <label for="input-name">ชื่อ-สกุล</label>
+            <input id="input-name" type="text" placeholder="เช่น เด็กชายสมชาย ใจดี" required>
+          </div>
+          <div class="form-row">
+            <label for="input-class">ชั้น/เลขที่</label>
+            <input id="input-class" type="text" placeholder="เช่น ม.6/1 เลขที่ 12" required>
+          </div>
+
+          <div class="mode-select">
+            <button type="button" class="mode-btn mode-btn--student" data-mode="student">
+              👩‍🎓 โหมดนักเรียน
+            </button>
+            <button type="button" class="mode-btn mode-btn--teacher" data-mode="teacher">
+              👩‍🏫 โหมดครู
+            </button>
+          </div>
+
+          <button type="submit" id="btn-start" class="btn-primary">เริ่มทดลอง →</button>
+        </form>
+
+        <p id="welcome-back-msg" class="welcome-back-msg" style="display:none;"></p>
+      </div>
+
+      <p class="credit-line">สื่อประกอบการเรียนรู้รายวิชาเคมี เรื่อง ปฏิกิริยาเคมีของสารอินทรีย์</p>
+    </section>
+
+    <!-- ============ หน้า 2: คู่มือการใช้สื่อกับใบงาน ============ -->
+    <section id="page-guide" class="page">
+      <h2 class="page-title">คู่มือการใช้สื่อกับใบงาน</h2>
+      <p class="page-desc">แอพนี้ช่วยให้คุณ "เข้าใจ" และ "เห็นภาพ" ก่อนลงมือเขียนคำตอบในใบงานกระดาษจริง</p>
+
+      <ol class="step-list">
+        <li>เลือกชนิดปฏิกิริยา</li>
+        <li>เลือกสารอินทรีย์</li>
+        <li>เลือกรีเอเจนต์</li>
+        <li>ปรับเงื่อนไขการทดลอง</li>
+        <li>กดเริ่มปฏิกิริยา</li>
+        <li>สังเกตสี กลิ่น ก๊าซ ตะกอน และผลิตภัณฑ์</li>
+        <li>อ่านสมการเคมี</li>
+        <li>บันทึกผลลงใบงาน (กระดาษ)</li>
+      </ol>
+
+      <div class="info-box">
+        <h3>สิ่งที่ต้องบันทึกลงใบงาน</h3>
+        <ul class="checklist">
+          <li>สารตั้งต้น</li>
+          <li>รีเอเจนต์</li>
+          <li>เงื่อนไข</li>
+          <li>สิ่งที่สังเกตได้</li>
+          <li>สมการเคมี</li>
+          <li>ชนิดของปฏิกิริยา</li>
+          <li>ผลิตภัณฑ์</li>
+          <li>เหตุผลประกอบ</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ หน้า 3: ห้องทดลองปฏิกิริยา ============ -->
+    <section id="page-lab" class="page">
+      <h2 class="page-title">ห้องทดลองปฏิกิริยา</h2>
+      <p class="page-desc">เลือกสาร ปรับเงื่อนไข แล้วกด "เริ่มปฏิกิริยา" เพื่อสังเกตผล จากนั้นนำผลที่ได้ไปบันทึกในใบงานของคุณ</p>
+
+      <div class="lab-grid">
+
+        <!-- ===== ส่วน A: แผงควบคุมการทดลอง ===== -->
+        <div class="panel panel-control">
+          <h3 class="panel-title">⚙️ แผงควบคุมการทดลอง</h3>
+
+          <div class="control-group">
+            <label for="select-reaction-type">1. ชนิดปฏิกิริยา</label>
+            <select id="select-reaction-type">
+              <option value="">-- เลือกชนิดปฏิกิริยา --</option>
+              <option value="การแทนที่">การแทนที่ (Substitution)</option>
+              <option value="การเติม">การเติม (Addition)</option>
+              <option value="การเผาไหม้">การเผาไหม้ (Combustion)</option>
+              <option value="ออกซิเดชัน">ออกซิเดชัน (Oxidation)</option>
+              <option value="เอสเทอริฟิเคชัน">เอสเทอริฟิเคชัน (Esterification)</option>
+              <option value="ไฮโดรลิซิส">ไฮโดรลิซิส (Hydrolysis)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="select-reactant">2. สารอินทรีย์</label>
+            <select id="select-reactant">
+              <option value="">-- เลือกสารอินทรีย์ --</option>
+              <optgroup label="แอลเคน">
+                <option value="methane">methane</option>
+                <option value="ethane">ethane</option>
+                <option value="propane">propane</option>
+              </optgroup>
+              <optgroup label="แอลคีน">
+                <option value="ethene">ethene</option>
+                <option value="propene">propene</option>
+              </optgroup>
+              <optgroup label="แอลไคน์">
+                <option value="ethyne">ethyne</option>
+              </optgroup>
+              <optgroup label="แอลกอฮอล์">
+                <option value="methanol">methanol</option>
+                <option value="ethanol">ethanol</option>
+                <option value="propan-1-ol">propan-1-ol</option>
+                <option value="propan-2-ol">propan-2-ol</option>
+              </optgroup>
+              <optgroup label="กรดคาร์บอกซิลิก">
+                <option value="methanoic acid">methanoic acid</option>
+                <option value="ethanoic acid">ethanoic acid</option>
+              </optgroup>
+              <optgroup label="เอสเตอร์">
+                <option value="methyl ethanoate">methyl ethanoate</option>
+                <option value="ethyl ethanoate">ethyl ethanoate</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="select-reagent">3. รีเอเจนต์</label>
+            <select id="select-reagent">
+              <option value="">-- เลือกรีเอเจนต์ --</option>
+              <option value="Cl2">Cl2</option>
+              <option value="Br2">Br2</option>
+              <option value="H2">H2</option>
+              <option value="HCl">HCl</option>
+              <option value="O2">O2</option>
+              <option value="KMnO4">KMnO4</option>
+              <option value="K2Cr2O7">K2Cr2O7</option>
+              <option value="CH3COOH">CH3COOH</option>
+              <option value="C2H5OH">C2H5OH</option>
+              <option value="H2O">H2O</option>
+              <option value="NaOH">NaOH</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label>4. เงื่อนไข (เลือกได้มากกว่า 1)</label>
+            <div class="toggle-row">
+              <button type="button" class="toggle-btn" id="toggle-uv" data-toggle="uv">💡 แสง UV</button>
+              <button type="button" class="toggle-btn" id="toggle-heat" data-toggle="heat">🔥 ความร้อน</button>
+              <button type="button" class="toggle-btn" id="toggle-catalyst" data-toggle="catalyst">⚗️ ตัวเร่งปฏิกิริยา</button>
+              <button type="button" class="toggle-btn" id="toggle-acid" data-toggle="acid">🧪 กรดเข้มข้น</button>
+            </div>
+          </div>
+
+          <div class="control-group" id="o2-level-group" style="display:none;">
+            <label for="slider-o2">ระดับออกซิเจน (สำหรับการเผาไหม้)</label>
+            <input type="range" id="slider-o2" min="1" max="10" value="8">
+            <div class="slider-readout"><span id="o2-readout-label">ออกซิเจนเพียงพอ</span></div>
+          </div>
+
+          <div class="control-group">
+            <label for="slider-reactant-amount">5. ปริมาณสารอินทรีย์ (<span id="reactant-amount-val">5</span> หน่วย)</label>
+            <input type="range" id="slider-reactant-amount" min="1" max="10" value="5">
+          </div>
+
+          <div class="control-group">
+            <label for="slider-reagent-amount">ปริมาณรีเอเจนต์ (<span id="reagent-amount-val">5</span> หน่วย)</label>
+            <input type="range" id="slider-reagent-amount" min="1" max="10" value="5">
+          </div>
+
+          <div class="control-group">
+            <label for="slider-temp">อุณหภูมิ (<span id="temp-val">25</span> °C)</label>
+            <input type="range" id="slider-temp" min="25" max="100" value="25">
+          </div>
+
+          <div class="control-group">
+            <label for="slider-time">เวลาในการทดลอง (<span id="time-val">1</span> นาที)</label>
+            <input type="range" id="slider-time" min="1" max="10" value="1">
+          </div>
+        </div>
+
+        <!-- ===== ส่วน B: พื้นที่จำลองการทดลอง ===== -->
+        <div class="panel panel-simulation">
+          <h3 class="panel-title">🔬 พื้นที่จำลองการทดลอง</h3>
+
+          <div class="bench">
+            <div class="bottle bottle--reactant">
+              <div class="bottle__label" id="bottle-reactant-label">สารตั้งต้น</div>
+            </div>
+
+            <div class="testtube-wrap">
+              <div class="uv-beam" id="uv-beam"></div>
+              <div class="testtube" id="testtube">
+                <div class="testtube__liquid" id="testtube-liquid"></div>
+                <div class="bubbles" id="bubbles"></div>
+                <div class="flame" id="flame"></div>
+                <div class="smoke" id="smoke"></div>
+                <div class="smell-icon" id="smell-icon">🌸</div>
+              </div>
+              <div class="heat-source" id="heat-source"></div>
+            </div>
+
+            <div class="bottle bottle--reagent">
+              <div class="bottle__label" id="bottle-reagent-label">รีเอเจนต์</div>
+            </div>
+          </div>
+
+          <div class="sim-buttons">
+            <button type="button" id="btn-drop" class="sim-btn">💧 หยดสาร</button>
+            <button type="button" id="btn-heat" class="sim-btn">🔥 ให้ความร้อน</button>
+            <button type="button" id="btn-uv" class="sim-btn">💡 เปิดแสง UV</button>
+            <button type="button" id="btn-react" class="sim-btn sim-btn--primary">▶️ เริ่มปฏิกิริยา</button>
+            <button type="button" id="btn-reset" class="sim-btn sim-btn--ghost">🔄 รีเซ็ตการทดลอง</button>
+          </div>
+        </div>
+
+        <!-- ===== ส่วน C: แผงผลการทดลอง ===== -->
+        <div class="panel panel-result" id="panel-result">
+          <h3 class="panel-title">📋 ผลการทดลอง</h3>
+
+          <div id="result-empty-state" class="result-empty">
+            ยังไม่มีผลการทดลอง — เลือกสารและกด "เริ่มปฏิกิริยา" เพื่อดูผล
+          </div>
+
+          <div id="result-content" class="result-content" style="display:none;">
+            <div class="result-status" id="result-status">-</div>
+
+            <dl class="result-list">
+              <dt>ชนิดปฏิกิริยา</dt><dd id="result-type">-</dd>
+              <dt>สมการเคมี</dt><dd id="result-equation" class="formula">-</dd>
+              <dt>สมการแบบคำ</dt><dd id="result-word-equation">-</dd>
+              <dt>ผลิตภัณฑ์</dt><dd id="result-product">-</dd>
+              <dt>สิ่งที่สังเกตได้</dt><dd id="result-observation">-</dd>
+              <dt>คำอธิบาย</dt><dd id="result-explanation">-</dd>
+            </dl>
+
+            <div class="result-note" id="result-note" style="display:none;"></div>
+
+            <div class="worksheet-prompt">
+              <strong>คำถามชวนคิดสำหรับใบงาน:</strong>
+              <p id="result-worksheet-question">-</p>
+            </div>
+
+            <p class="record-hint">📝 บันทึกข้อมูลข้างต้นลงในใบงานกระดาษของคุณ</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ หน้า 4: สำรวจสมการและผลิตภัณฑ์ ============ -->
+    <section id="page-equation" class="page">
+      <h2 class="page-title">สำรวจสมการและผลิตภัณฑ์</h2>
+      <p class="page-desc">เลือกปฏิกิริยาเพื่อดูความสัมพันธ์ระหว่างชื่อสาร สูตรเคมี และโครงสร้างอย่างง่าย</p>
+
+      <div class="control-group eq-select-group">
+        <label for="select-eq-reaction">เลือกปฏิกิริยาที่ต้องการสำรวจ</label>
+        <select id="select-eq-reaction">
+          <option value="">-- เลือกปฏิกิริยา --</option>
+        </select>
+      </div>
+
+      <div class="eq-toggle-row">
+        <button type="button" class="toggle-btn eq-toggle" id="eq-toggle-name" data-eq-toggle="name">ชื่อสาร</button>
+        <button type="button" class="toggle-btn eq-toggle" id="eq-toggle-formula" data-eq-toggle="formula">สูตรเคมี</button>
+        <button type="button" class="toggle-btn eq-toggle" id="eq-toggle-structure" data-eq-toggle="structure">โครงสร้าง</button>
+        <button type="button" class="toggle-btn eq-toggle" id="eq-toggle-highlight" data-eq-toggle="highlight">เน้นพันธะที่เปลี่ยน</button>
+      </div>
+
+      <div class="eq-view-row">
+        <button type="button" class="sim-btn eq-view-btn eq-view-btn--active" id="eq-view-before" data-eq-view="before">ก่อนเกิดปฏิกิริยา</button>
+        <button type="button" class="sim-btn eq-view-btn" id="eq-view-after" data-eq-view="after">หลังเกิดปฏิกิริยา</button>
+        <button type="button" class="sim-btn eq-view-btn" id="eq-view-compare" data-eq-view="compare">เปรียบเทียบก่อน-หลัง</button>
+      </div>
+
+      <div id="eq-empty-state" class="result-empty">เลือกปฏิกิริยาด้านบนเพื่อเริ่มสำรวจ</div>
+
+      <div id="eq-content" class="eq-content" style="display:none;">
+
+        <div class="eq-stage" id="eq-stage-single">
+          <div class="eq-card" id="eq-card-before">
+            <div class="eq-card__label">ก่อนเกิดปฏิกิริยา</div>
+            <div class="eq-card__name" id="eq-before-name"></div>
+            <div class="eq-card__formula formula" id="eq-before-formula"></div>
+            <div class="eq-card__structure" id="eq-before-structure"></div>
+          </div>
+          <div class="eq-card" id="eq-card-after">
+            <div class="eq-card__label">หลังเกิดปฏิกิริยา</div>
+            <div class="eq-card__name" id="eq-after-name"></div>
+            <div class="eq-card__formula formula" id="eq-after-formula"></div>
+            <div class="eq-card__structure" id="eq-after-structure"></div>
+          </div>
+        </div>
+
+        <div class="eq-summary">
+          <div class="eq-summary__row">
+            <strong>สมการแบบคำ:</strong> <span id="eq-word-equation"></span>
+          </div>
+          <div class="eq-summary__row">
+            <strong>สมการเคมี:</strong> <span id="eq-chem-equation" class="formula"></span>
+          </div>
+          <div class="eq-summary__row eq-highlight-text" id="eq-highlight-text" style="display:none;">
+            <strong>พันธะที่เปลี่ยนแปลง:</strong> <span id="eq-highlight-detail"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ หน้า 5: ตารางสังเกตผล ============ -->
+    <section id="page-table" class="page">
+      <h2 class="page-title">ตารางสังเกตผล</h2>
+      <p class="page-desc">บันทึกผลการทดลองจากห้องทดลองมาไว้ที่นี่ แล้วคัดลอก/พิมพ์ไปใส่ในใบงานกระดาษของคุณ</p>
+
+      <div class="table-toolbar">
+        <button type="button" id="btn-save-to-table" class="sim-btn sim-btn--primary">💾 บันทึกผลการทดลองล่าสุดลงตาราง</button>
+        <button type="button" id="btn-clear-table" class="sim-btn sim-btn--ghost">🗑️ ล้างตาราง</button>
+        <button type="button" id="btn-copy-table" class="sim-btn">📋 คัดลอกตาราง</button>
+        <button type="button" id="btn-download-table" class="sim-btn">⬇️ ดาวน์โหลด .txt</button>
+        <button type="button" id="btn-print-table" class="sim-btn">🖨️ พิมพ์ผลการทดลอง</button>
+      </div>
+
+      <div class="table-scroll">
+        <table class="obs-table" id="obs-table">
+          <thead>
+            <tr>
+              <th>ลำดับ</th>
+              <th>สารตั้งต้น</th>
+              <th>รีเอเจนต์</th>
+              <th>เงื่อนไข</th>
+              <th>สิ่งที่สังเกตได้</th>
+              <th>สมการเคมี</th>
+              <th>ชนิดปฏิกิริยา</th>
+              <th>ผลิตภัณฑ์</th>
+              <th>สรุปผล</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="obs-table-body">
+            <tr id="obs-table-empty-row">
+              <td colspan="10" class="obs-table-empty">ยังไม่มีข้อมูล — ไปที่ "ห้องทดลอง" แล้วกดบันทึกผลที่นี่</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ หน้า 6: ภารกิจใบงาน Interactive ============ -->
+    <section id="page-mission" class="page">
+      <h2 class="page-title">ภารกิจใบงาน Interactive</h2>
+      <p class="page-desc">ทำภารกิจทั้ง 6 ฐานเพื่อฝึกคิดก่อนเขียนคำตอบลงในใบงานกระดาษของคุณ</p>
+      <div id="mission-list" class="mission-list"></div>
+    </section>
+
+    <!-- ============ หน้า 7: สรุปผลการเรียนรู้และใบรายงาน ============ -->
+    <section id="page-summary" class="page">
+      <h2 class="page-title">สรุปผลการเรียนรู้และใบรายงาน</h2>
+      <p class="page-desc">สรุปภาพรวมการเรียนรู้ของคุณ ดาวน์โหลดหรือพิมพ์แนบไปกับใบงานกระดาษได้</p>
+
+      <!-- ===== คะแนน 3 ส่วน ===== -->
+      <div class="score-board" id="score-board">
+        <div class="score-card">
+          <div class="score-card__label">คะแนนการทดลองครบฐาน</div>
+          <div class="score-card__value" id="score-mission">0 / 6 ฐาน</div>
+        </div>
+        <div class="score-card">
+          <div class="score-card__label">คะแนนตอบคำถามภารกิจ</div>
+          <div class="score-card__value" id="score-worksheet">0 / 18 ข้อ</div>
+        </div>
+        <div class="score-card">
+          <div class="score-card__label">คะแนนแบบทดสอบสรุป</div>
+          <div class="score-card__value" id="score-quiz">ยังไม่ได้ทำ</div>
+        </div>
+      </div>
+
+      <!-- ===== ใบรายงานสรุปผล ===== -->
+      <div class="report-section" id="report-section">
+        <h3 class="panel-title">📄 ใบรายงานผลการทดลอง</h3>
+
+        <div class="report-card">
+          <dl class="report-meta">
+            <dt>ชื่อ-สกุล</dt><dd id="report-name">-</dd>
+            <dt>ชั้น/เลขที่</dt><dd id="report-class">-</dd>
+            <dt>วันที่</dt><dd id="report-date">-</dd>
+            <dt>จำนวนการทดลองที่ทำ</dt><dd id="report-exp-count">-</dd>
+            <dt>ฐานที่ผ่าน</dt><dd id="report-mission-passed">-</dd>
+            <dt>คะแนนจากคำถามภารกิจ</dt><dd id="report-worksheet-score">-</dd>
+            <dt>คะแนนแบบทดสอบสรุป</dt><dd id="report-quiz-score">-</dd>
+            <dt>ปฏิกิริยาที่เข้าใจดี</dt><dd id="report-good-topics">-</dd>
+            <dt>ปฏิกิริยาที่ควรทบทวน</dt><dd id="report-review-topics">-</dd>
+          </dl>
+
+          <div class="report-field">
+            <label for="report-finding">ข้อค้นพบจากการทดลอง</label>
+            <textarea id="report-finding" placeholder="พิมพ์สิ่งที่คุณค้นพบจากการทดลองวันนี้..."></textarea>
+          </div>
+          <div class="report-field">
+            <label for="report-question">ข้อสงสัยเพิ่มเติม</label>
+            <textarea id="report-question" placeholder="มีคำถามหรือข้อสงสัยอะไรอยากถามครูเพิ่มเติมไหม..."></textarea>
+          </div>
+        </div>
+
+        <div class="report-actions">
+          <button type="button" id="btn-download-report" class="sim-btn sim-btn--primary">⬇️ ดาวน์โหลดรายงาน .txt</button>
+          <button type="button" id="btn-copy-report" class="sim-btn">📋 คัดลอกคำตอบทั้งหมด</button>
+          <button type="button" id="btn-print-report" class="sim-btn">🖨️ พิมพ์รายงาน</button>
+          <button type="button" id="btn-reset-all" class="sim-btn sim-btn--ghost">♻️ รีเซ็ตข้อมูลทั้งหมด</button>
+        </div>
+
+        <h4 class="report-table-title">ตารางผลการทดลองทั้งหมด</h4>
+        <div class="table-scroll">
+          <table class="obs-table" id="report-table">
+            <thead>
+              <tr>
+                <th>ลำดับ</th><th>สารตั้งต้น</th><th>รีเอเจนต์</th><th>เงื่อนไข</th>
+                <th>สิ่งที่สังเกตได้</th><th>สมการเคมี</th><th>ชนิดปฏิกิริยา</th><th>ผลิตภัณฑ์</th><th>สรุปผล</th>
+              </tr>
+            </thead>
+            <tbody id="report-table-body">
+              <tr><td colspan="9" class="obs-table-empty">ยังไม่มีข้อมูลการทดลอง</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== แบบทดสอบสรุป 15 ข้อ ===== -->
+      <div class="quiz-section">
+        <h3 class="panel-title">📝 แบบทดสอบสรุป (15 ข้อ)</h3>
+        <p class="page-desc">เลือกคำตอบที่ถูกต้องที่สุด แล้วกด "ตรวจคำตอบทั้งหมด" เพื่อดูคะแนนและเฉลย</p>
+        <div id="quiz-list" class="quiz-list"></div>
+        <div class="quiz-actions">
+          <button type="button" id="btn-submit-quiz" class="sim-btn sim-btn--primary">✅ ตรวจคำตอบทั้งหมด</button>
+          <button type="button" id="btn-retry-quiz" class="sim-btn sim-btn--ghost">🔄 ทำแบบทดสอบใหม่</button>
+        </div>
+        <div id="quiz-result-summary" class="quiz-result-summary" style="display:none;"></div>
+        <div id="quiz-review-suggestion" class="quiz-review-suggestion" style="display:none;"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
